@@ -1,6 +1,9 @@
 FROM eclipse-temurin:21.0.2_13-jdk-jammy
  
-#  
+ARG CI_COMMIT_SHA
+ARG CI_COMMIT_REF_NAME
+ARG CI_COMMIT_TITLE
+ARG CI_COMMIT_TIMESTAMP
 
 
 # This makes ${USER.HOME} /
