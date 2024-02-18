@@ -1,7 +1,7 @@
 ---
 variables:
-   IMAGE_NAME: tomcat
-   NAMESPACE: java
+   IMAGE_NAME: java
+   NAMESPACE: vpro
 
 include:
   - project: 'shared/gitlab/gitlab-templates'
