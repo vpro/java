@@ -61,8 +61,14 @@ COPY bashrc /.bashrc
 COPY exrc /.exrc
 
 
-
 ENTRYPOINT ["java", "-jar", "/app/app.war"]
+
+RUN echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
+  addgroup  --system --gid 1001 application && \
+  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
+  adduser application root && \
+  (echo -e "vpro/java git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
+  (echo -n "vpro/java build time=" ; date -Iseconds) >> /DOCKER.BUILD
   
 # The onbuild commands to install the application when this image is overlaid
 
