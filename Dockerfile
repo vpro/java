@@ -6,7 +6,7 @@ FROM eclipse-temurin:21.0.2_13-jdk-jammy
 # This makes ${USER.HOME} /
 ENV HOME /
 # Handy, on a new shell you'll be in the directory of interest
-WORKDIR /root
+WORKDIR /app
 
 COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 
@@ -26,7 +26,8 @@ RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
-  mkdir -p /conf
+  mkdir -p /conf && \
+  mkdir -p /app
 
 
 COPY rds-ca-2019-root.pem /conf
@@ -61,7 +62,7 @@ COPY exrc /.exrc
 
 
 
-ENTRYPOINT ["java", "-jar", "/root/app.war"]
+ENTRYPOINT ["java", "-jar", "/app/app.war"]
   
 # The onbuild commands to install the application when this image is overlaid
 
@@ -73,7 +74,7 @@ ONBUILD ARG CI_COMMIT_REF_NAME
 ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ARG CI_COMMIT_TITLE
 ONBUILD ARG CI_COMMIT_TIMESTAMP
-ONBUILD ADD target/*${PROJECT_VERSION}.war /root/app.war
+ONBUILD ADD target/*${PROJECT_VERSION}.war /app/app.war
 
  
 ONBUILD LABEL version="${PROJECT_VERSION}"
