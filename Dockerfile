@@ -48,7 +48,8 @@ COPY binbash /.binbash
 # - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-  dpkg-reconfigure --frontend noninteractive tzdata
+  dpkg-reconfigure --frontend noninteractive tzdata && \
+  ln -s /tmp /data
 
 
 # With bearable key bindings:
@@ -58,7 +59,9 @@ COPY bashrc /.bashrc
 # ' Failed to source defaults.vim' (even an empty vi config file like that avoid it)
 COPY exrc /.exrc
 
-VOLUME "/data" "/conf"
+
+
+ENTRYPOINT ["java", "-jar", "/root/app.war"]
   
 # The onbuild commands to install the application when this image is overlaid
 
@@ -70,10 +73,9 @@ ONBUILD ARG CI_COMMIT_REF_NAME
 ONBUILD ARG CI_COMMIT_SHA
 ONBUILD ARG CI_COMMIT_TITLE
 ONBUILD ARG CI_COMMIT_TIMESTAMP
-ONBUILD ADD target/*${PROJECT_VERSION}.war /tmp/app.war
+ONBUILD ADD target/*${PROJECT_VERSION}.war /root/app.war
 
  
-
 ONBUILD LABEL version="${PROJECT_VERSION}"
 ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
@@ -82,4 +84,6 @@ ONBUILD RUN apt-get update && apt-get -y upgrade && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
   (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
+    
+  
 

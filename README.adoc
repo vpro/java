@@ -1,0 +1,5 @@
+= Java image @ vpro
+
+Image that can be used for stateless deployments e.g. of e.g. springboot applications.
+
+Small constomization of eclipse-temurin image

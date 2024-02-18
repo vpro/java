@@ -8,7 +8,7 @@ dockertest:
 
 
 run:
-	docker run -i vpro/java:latest
+	docker run -it --entrypoint /bin/bash vpro/java:latest 
 
 exec:
 	docker run -it --entrypoint /bin/bash vpro/java:latest

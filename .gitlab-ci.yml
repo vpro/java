@@ -1,0 +1,9 @@
+---
+variables:
+   IMAGE_NAME: tomcat
+   NAMESPACE: java
+
+include:
+  - project: 'shared/gitlab/gitlab-templates'
+    ref: 'tags/10.0'
+    file: 'docker_build.yml'
