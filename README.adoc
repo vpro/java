@@ -1,5 +1,28 @@
 = Java image @ vpro
 
-Image that can be used for stateless deployments e.g. of e.g. springboot applications.
+Image that can be used for stateless deployments of e.g. springboot applications.
 
-Small constomization of eclipse-temurin image
+Small constumization of eclipse-temurin image (like in the tomcat image)
+
+* proper bash set up
+* proper timezone set up
+* some bash aliases 
+** aptime
+** ts
+** ..
+
+
+== Versions
+
+
+|===
+|Tags |Description |
+
+|21.0
+|First release
+|2024-02-18
+
+|21.x
+|java 21
+|
+|===
