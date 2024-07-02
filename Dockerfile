@@ -29,9 +29,8 @@ RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
-  mkdir -p /conf && \
-  mkdir -p /app
-
+  mkdir -p /conf /app && \
+  chmod 775 /conf /app
 
 COPY rds-ca-2019-root.pem /conf
 
@@ -49,7 +48,6 @@ ENV ENV=/.binbash
 COPY binbash /.binbash
 
 # - Setting up timezone and stuff
-# - We run always with a user named 'application' with uid '1001'
 RUN echo "dash dash/sh boolean false" | debconf-set-selections &&  DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash && \
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
   dpkg-reconfigure --frontend noninteractive tzdata && \
@@ -67,9 +65,6 @@ COPY exrc /.exrc
 ENTRYPOINT ["java", "-jar", "/app/app.war"]
 
 RUN echo '#this file is hidden in openshift\nenv=localhost' > /conf/application.properties && \
-  addgroup  --system --gid 1001 application && \
-  adduser --system --uid 1001 application --gid 1001 --disabled-password --no-create-home  --home / && \
-  adduser application root && \
   (echo -e "vpro/java git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") > /DOCKER.BUILD && \
   (echo -n "vpro/java build time=" ; date -Iseconds) >> /DOCKER.BUILD
   
