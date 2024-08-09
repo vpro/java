@@ -1,9 +1,0 @@
----
-variables:
-   IMAGE_NAME: java
-   NAMESPACE: vpro
-
-include:
-  - project: 'shared/gitlab/gitlab-templates'
-    ref: 'feature/chp5'
-    file: 'docker_build.yml'
