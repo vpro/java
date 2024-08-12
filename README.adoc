@@ -18,7 +18,7 @@ Small constumization of https://hub.docker.com/_/eclipse-temurin[eclipse-temurin
 |===
 |Tags |Description |
 
-|21.1
+|21.2
 |First public release at ghcr.io
 |2024-08-12
 
