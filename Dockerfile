@@ -1,5 +1,5 @@
-FROM eclipse-temurin:21.0.2_13-jdk-jammy
- 
+FROM eclipse-temurin:21.0.4_7-jdk-jammy
+
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_REF_NAME
 ARG CI_COMMIT_TITLE
