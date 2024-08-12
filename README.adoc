@@ -2,7 +2,7 @@
 
 Image that can be used for stateless deployments of e.g. springboot applications.
 
-Small constumization of eclipse-temurin image (like in the tomcat image)
+Small constumization of https://hub.docker.com/_/eclipse-temurin[eclipse-temurin image] (like in the tomcat image)
 
 * proper bash set up
 * proper timezone set up
