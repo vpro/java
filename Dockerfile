@@ -28,6 +28,7 @@ COPY rds-ca-2019-root.der $JAVA_HOME/lib/security
 RUN set -eux && \
   apt-get update && apt-get -y upgrade && \
   apt-get -y install less ncal procps curl rsync dnsutils  netcat apache2-utils  vim-tiny psmisc inotify-tools gawk && \
+  rm -rf /var/lib/apt/lists/* && \
   keytool -importcert -alias rds-root -keystore ${JAVA_HOME}/lib/security/cacerts -storepass changeit -noprompt -trustcacerts -file $JAVA_HOME/lib/security/rds-ca-2019-root.der && \
   mkdir -p /conf /app && \
   chmod 775 /conf /app
@@ -86,6 +87,7 @@ ONBUILD LABEL maintainer=digitaal-techniek@vpro.nl
 
 # We need regular security patches. E.g. on every build of the application
 ONBUILD RUN apt-get update && apt-get -y upgrade && \
+  rm -rf /var/lib/apt/lists/* && \
   (echo "${NAME} version=${PROJECT_VERSION}") >> /DOCKER.BUILD && \
   (echo -e "${NAME} git version=${CI_COMMIT_SHA}\t${CI_COMMIT_REF_NAME}\t${CI_COMMIT_TIMESTAMP}\t${CI_COMMIT_TITLE}") >> /DOCKER.BUILD && \
   (echo -n "${NAME} build time=" ; date -Iseconds) >> /DOCKER.BUILD
